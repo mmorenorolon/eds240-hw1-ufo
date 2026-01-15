@@ -2,9 +2,10 @@
 title: "HW #1"
 subtitle: "Interpreting `{ggplot2}` code"
 description: "Assigned Wed 01/07/2026 | Due Wed 01/14/2026"
-author: "Your Name"
+author: "Melannie Moreno Rolón"
 toc: true
 code-line-numbers: true
+format: pdf
 editor_options: 
   chunk_output_type: console
 ---
@@ -54,11 +55,11 @@ showtext::showtext_auto(enable = TRUE)
 
 1. **What is the author defining in lines 15-17? Where else in the code do these defined variables show up? What advantage(s) is there to defining these values here, as variables, rather than defining the values directly throughout the script?**
 
-    - Answer here
+    - In line 15, the author defines a color palette by creating a vector and saving it as an object named `alien`. In lines 16 and 17, the background color and accent color are defined as the variables `bg` and `accent`. Defining these values early in the script is helpful because when the author later specifies theme elements or color scales, they can reference these variables instead of re‑writing the hex codes each time. This practice avoids redundancy throughout the script. As a result, the script becomes easier to read and to maintain.  
 
 2. **In your own words, explain what the function, `font_add_google()`, does. What's the difference between the two arguments, `name` and `family`?**
 
-    - Answer here
+    - The `font_add_google()` function searches for a font in the Google Fonts repository and downloads it so it can be used within the sysfonts package. The `name` argument refers to the official Google Fonts name, while the `family` argument is the custom name the user assigns so the font can be referenced later in plotting functions. 
 
 ## II. Data wrangling
 
@@ -80,7 +81,7 @@ df_pop <- places |>
 
 3. **Describe what this data frame contains.**
 
-    - Answer here
+    - This data frame contains total population estimates for each state in the United States. The `state` column includes state abbreviations, and the `pop` column stores each state’s corresponding total population that aggregated from the original places dataset.
 
 ### ii. Create `df_us`
 
@@ -104,11 +105,11 @@ df_us <- ufo_sightings |>
 
 4. **Describe what this data frame contains.**
 
-    - Answer here
+    - This data frame contains, for each U.S. state, the total number of UFO observations, the total population estimate, the number of UFO sightings per 10,000 people, and a calculated opacity value that will later be used for visualization.     
 
 5. **What does `opacity_val` represent, and why is it calculated?**
 
-    - Answer here
+    - The `opacity_val` variable represents a normalized transparency value based on the number of UFO sightings per 10,000 people in each state. It is calculated so that states with higher relative ufo sightings appear more opaque in the visualization and emphasize differences across states.  
 
 ### iii. Create `df_shape`
 
@@ -132,15 +133,15 @@ df_shape <- ufo_sightings |>
 
 6. **Describe what this data frame contains.**
 
-    - Answer here
+    - This data frame contains the most commonly reported UFO shapes. The `shape` column lists the shape categories, `total_sightings` contains the number of sightings for each shape, ordered from most to least frequent, and `opacity_val` stores a rescaled transparency value for use in plotting. 
 
 7. **What does `fct_reorder` do when it is applied to the `shape` variable? What would have happened if this step was not performed?**
 
-    - Answer here
+    - The `fct_reorder()` function reorders the categorical values in the shape variable based on the values in the `total_sightings` column. This ensures that the shapes appear in an order that reflects their frequency rather than alphabetical order. Without this step, the plot would display the shapes in a less meaningful order.
 
 8. **What is the purpose of rescaling `opacity_val`? And why rescale from 0.3 to 1?**
 
-    - Answer here
+    - The purpose of rescaling `opacity_val` from 0.3 to 1 is to ensure that even the shape with the fewest ufo sightings remains visible. Setting a minimum opacity prevents categories from becoming fully transparent while still preserving visual differences in magnitude.
 
 ### iv. Create `df_day_hour`
 
@@ -168,11 +169,11 @@ df_day_hour <- ufo_sightings |>
 
 9. **Describe what this data frame contains.**
 
-    - Answer here
+    - This data frame summarizes ufo sightings by day of the week and hour of the day. The `day` column represents the numeric weekday, `wday` contains the labeled weekday abbreviation, and `hour` ranges from 0 to 23. The `total_daily_obs` column records the number of sightings for each day-hour combination. The final two columns include `opacity_val`, which scales transparency by frequency, and `hour_lab`, which converts numeric hours into readable am/pm labels. 
 
 10. **What is the purpose of the last line inside the `case_when()` statement (`TRUE ~ paste0(hour - 12, "pm")`)?**
 
-    - Answer here
+    - This line converts all hours after 12 into the correct “pm” label by subtracting 12 from the hour value and appending “pm” and makes sure the time labels are displayed in a familiar 12-hour format.
 
 ## III. Prepare text elements
 
@@ -194,7 +195,7 @@ caption <- glue("{original}{space}{dan_github}
 
 11. **In your own words, what is the difference between `paste0()` and `glue()`? Why did the author use `paste0` to construct `quotes` and `glue` to construct the other text elements?**
 
-    - Answer here
+    - The `paste0()` function concatenates the character strings without inserting spaces and it works well for vectorized text operations. The `glue()` function allows variables to be embedded directly within strings using curly brackets and makes it more readable for constructing formatted text. The author uses `paste0()` to build the quotes vector, while `glue()` is used for the caption text because it integrates variables and HTML elements more cleanly.
 
 ## IV. Build plots
 
@@ -236,7 +237,7 @@ plot_shape <- ggplot(data = df_shape) +
 
 12. **Explain the values provided to the `x` aesthetic for both text geoms (`shape` & `total_sightings`).**
 
-    - Answer here
+    - In `geom_col()`, the x aesthetic maps `total_sightings` to create horizontal bars. In the first `geom_text()`, the x value is set to 200 to position the shape labels near the start of each bar. In the second `geom_text()`, "total_sightings - 200" positions the numeric labels near the end of each bar but slightly inset. Doing this prevents overlap with the plot boundary.
 
 ### ii. Build `plot_us` 
 
@@ -276,7 +277,7 @@ plot_us <-  ggplot(df_us) +
 
 13. **Consider the order of `geom_*()` layers in the the above plot (`plot_us`). Why did the author order the layers in this way?**
 
-    - Answer here
+    - The author wanted to place the rectangle shape as a background with geom_rect(). Then, he used the two geom texts to draw the state abbreviation and the number of sightings on top of the background created with geom_rect().  If these functions had been ordered any other way, the geom texts would not be visible.  
 
 ### iii. Build `plot_day`
 
@@ -310,11 +311,11 @@ plot_day <- ggplot(data = df_day_hour) +
 
 14. **This plot includes one-letter labels for each day of the week. How is this accomplished when week days are written using their three-letter abbreviations (e.g. `Mon`, `Tue`) in the `df_day_hour` data frame?**
 
-    - Answer here
+    - Within the second 'geom_text()' plotting function, the author specified the location of the one-letter  labels under the labels argument using the `str_sub()` function. The `str_sub()` function is used here to substitute the three-letter abbreviation in the `df_day_hour` data frame by inputting the character vector 'wday' and setting the start and end arguments to 1 to establish the number of characters to extract.  
 
 15. **What role do the `ylim()` and `xlim()` functions play in shaping a ggplot, and how do they change the visual layout of this particular plot? To better understand their effect, try rerunning the code with each of these lines commented out and observe how the plot’s spacing and composition change.**
 
-    - Answer here
+    - The `ylim()` and `xlim()` functions define the visible boundaries of the y-axis and x-axis. In this plot, adjusting these limits increases the available plotting space, allowed room for labels and improved the overall balance of the layout. Removing these limits changes the spacing and can cause elements to appear cramped or misaligned.
 
 ### iv. Build `quote*`s
 
@@ -373,9 +374,9 @@ quote3 <- ggplot() +
   coord_cartesian(clip = "off")
 ```
 
-16. **Why do you think the author chose to convert these text elements (and also in `plot_ufo`, below!) into ggplot objects (you may consider returning to this question after you've worked your way through all of the code)?**
+**16.** **Why do you think the author chose to convert these text elements (and also in `plot_ufo`, below!) into ggplot objects (you may consider returning to this question after you've worked your way through all of the code)?**
 
-    - Answer here
+    - The author chose to convert the text objects into ggplot objects to later arrange these objects within the base plot.
 
 ### v. Build `plot_ufo`
 
@@ -420,6 +421,7 @@ plot_base <- ggplot() +
     plot.subtitle = element_text(family = "bar", 
                                  hjust = 0.5, 
                                  margin = margin(b = 20)),
+    # element_markdown() -> renders HTML formatting in text 
     plot.caption = ggtext::element_markdown(family = "bar",
                                             face = "italic",
                                             color = colorspace::darken(accent, 0.25),
@@ -431,7 +433,7 @@ plot_base <- ggplot() +
 
 17. **Why does the author render `plot.caption` using `ggtext::element_markdown()`, rather than `element_text()` (like he does for rendering `plot.title` and `text`)?**
 
-    - Answer here
+    - The application of the `ggtext::element_markdown` function renders the formatted HTML tags in the `caption` text object. 
 
 ## V. Assemble & save
 
@@ -462,11 +464,11 @@ ggsave(plot = plot_final,
 
 18. **Explain how `plot_final` is assembled. What do you think is the most challenging aspect of arranging all components into a single plot?**
 
-    - Answer here
+    - The plot is first assembeled by setting the base ggplot object that the author created. After the base is established, the author then inserted the plots and text objects within this base object. I thought the most challenging aspect to arranging all of the components was to determine the most appropriate numbers for the location of the objects in the 'left', 'right', 'top', and 'bottom' arguments in the `inset_element` function. 
 
-19. **Can you think of one reason the author may have chosen to separate the construction of `plot_base` and `plot_final`?**
+**19.** **Can you think of one reason the author may have chosen to separate the construction of `plot_base` and `plot_final`?**
 
-    - Answer here
+    - One possible reason for why the author chose to do this is because it is easier to customize the location of your objects within the base and avoid extensive lines of code that would be harder to troubleshoot if an error was present in the code.
 
 ## Answer some final reflective questions 
 
@@ -474,28 +476,28 @@ ggsave(plot = plot_final,
 
     a. **What "perceptual tasks" (from Cleveland & McGill's heirarchy) must the viewer perform to extract information from these visualizations?**
         
-        - Answer here
+        - The viewer has to judge the position of the objects, as well as perceive angles and areas to extract the information that is presented in visualizations.
     
     b. **What task(s) do you think the author wanted to enable or message(s) he wanted to convey with these visualizations (see lecture 2.1, slide 16 for examples)? Be sure to note at least one task / message for each of the three data viz.**
     
-        - Answer here
+        - I think the author used the ordered bar plot to compare the categories of shapes that get reported in ufo sightings. In the plot displaying the number of ufo sightings per 10,000 inhabitants, the author might have wanted to display the spatial distribution of the number of ufo sightings and have the viewer be able to easily compare them geographically. In the last visualization, the task might have been to display the temporal pattern.
     
     c. **Name at least one caveat to the "hierarchy of perceptual tasks" that the author employed to achieve a goal(s) you noted in question b?**
     
-        - Answer here
+        - The author relies on color saturation, which ranks lower in the perceptual hierarchy. While this can reduce precision, it is used effectively here to convey magnitude while maintaining visual cohesion across the infographic.
 
 21. **Describe two elements of this piece that you find visually-pleasing / easy to understand / intuitive. Why?** 
 
-    - Answer here
+    - The geofaceted layout makes state-level comparisons intuitive and avoids distortion from traditional maps. The use of `coord_polar()` to represent time feels familiar, similar to reading a clock, which makes the temporal pattern easier to understand.
 
 22. **Describe two elements of this piece that you feel could be better presented in a different way. Why?** 
 
-    - Answer here
+    - Lower-opacity values are harder to see, requiring zooming to read details. Additionally, the final temporal visualization lacks a title or caption, which could help guide interpretation.
     
 23. **Describe two new things that you learned by interpreting / annotating this code. These could be packages, functions, or even code organizational approaches that you hadn't previously known about or considered.**
 
-    - Answer here
+    - I learned about the `geofacet` package and how it can be used to display geographic data without a traditional map. I also learned how multiple ggplot objects can be inserted into a base plot, which was a new organizational approach for me.
 
 24. **How, if at all, did you use AI tools to help you interpret this code? Describe your approach to using these tools for this assignment. In what ways was consulting the documentation more (or less) helpful than using AI?**
 
-    - Answer here
+    - I did not use AI tools to interpret the code itself. I relied on documentation and examples. I found the documentation to be more efficient and precise for understanding function behavior.  
