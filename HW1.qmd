@@ -468,7 +468,7 @@ ggsave(plot = plot_final,
 
 **19.** **Can you think of one reason the author may have chosen to separate the construction of `plot_base` and `plot_final`?**
 
-    - One possible reason for why the author chose to do this is because it is easier to customize the location of your objects within the base and avoid extensive lines of code that would be harder to troubleshoot if an error was present in the code.
+- One possible reason for why the author chose to do this is because it is easier to customize the location of your objects within the base and avoid extensive lines of code that would be harder to troubleshoot if an error was present in the code.
 
 ## Answer some final reflective questions 
 
